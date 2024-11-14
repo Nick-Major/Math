@@ -1,26 +1,30 @@
-class Character {
+export class Character {
     constructor(name) {
         this.name = name;
         this.health = 100;
+        this.distance = 1;
+        this.stoned = false;
     }
 
-    set attack(distance) {
-        this._attack = 100 * (1 - (distance - 1) / 10);
+    set attack(value) {
+        this._attack = value;
     }
 
     get attack() {
-        return this._attack;
+        let attack = this._attack * (1 - (this.distance - 1) / 10);
+
+        if(this.stoned) {
+            return Math.round(attack - Math.log2(this.distance) * 5);
+        };
+
+        return attack;
+    }
+
+    set stoned(value) {
+        this._stoned = value;
+    }
+
+    get stoned() {
+        return this._stoned;
     }
 };
-
-//1 = 100% (100 - 0)
-//2 = 90% (100 - 10)
-//3 = 80% (100 - 20)
-//4 = 70% (100 - 30)
-//5 = 60% (100 - 40)
-
-const wizard = new Character('Gandalf');
-
-wizard.attack = 2;
-
-console.log(wizard.attack);
